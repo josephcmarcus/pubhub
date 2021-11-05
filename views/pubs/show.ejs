@@ -1,0 +1,17 @@
+<% layout('layouts/boilerplate') %>
+    <h1><%= pub.title %></h1>
+    <h2><%= pub.location %></h2>
+    <img src="<%= pub.image %>" alt="">
+    <p>Average Price Per Drink: $<%= pub.price %></p>
+    <p><%= pub.description %></p>
+    <p>
+        <a href="/pubs/<%= pub._id %>/edit">Edit Pub</a>
+    </p>
+    <p>
+        <form action="/pubs/<%= pub._id %>?_method=DELETE" method="POST">
+        <button>Delete Pub</button>
+        </form>
+    </p>
+    <footer>
+        <a href="/pubs">All Pubs</a>
+    </footer>

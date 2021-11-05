@@ -1,0 +1,14 @@
+<% layout('layouts/boilerplate') %>
+    <h1>New Pub</h1>
+    <form action="/pubs" method="POST">
+        <div>
+            <label for="title">Title</label>
+            <input type="text" id="title" name="pub[title]">
+        </div>
+        <div>
+            <label for="location">Location</label>
+            <input type="text" id="location" name="pub[location]">
+        </div>
+        <button>Add Pub</button>
+    </form>
+    <a href="/pubs">All Pubs</a>

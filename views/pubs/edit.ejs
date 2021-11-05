@@ -1,0 +1,14 @@
+<% layout('layouts/boilerplate') %>
+    <h1>Edit <%= pub.title %></h1>
+    <form action="/pubs/<%= pub._id %>?_method=PUT" method="POST">
+        <div>
+            <label for="title">Title</label>
+            <input type="text" id="title" name="pub[title]" value="<%= pub.title %>">
+        </div>
+        <div>
+            <label for="location">Location</label>
+            <input type="text" id="location" name="pub[location]" value="<%= pub.location %>">
+        </div>
+        <button>Update Pub</button>
+    </form>
+    <a href="/pubs/<%= pub._id %>">All Pubs</a>
