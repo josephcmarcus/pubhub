@@ -1,17 +1,26 @@
 <% layout('layouts/boilerplate') %>
-    <h1><%= pub.title %></h1>
-    <h2><%= pub.location %></h2>
-    <img src="<%= pub.image %>" alt="">
-    <p>Average Price Per Drink: $<%= pub.price %></p>
-    <p><%= pub.description %></p>
-    <p>
-        <a href="/pubs/<%= pub._id %>/edit">Edit Pub</a>
-    </p>
-    <p>
-        <form action="/pubs/<%= pub._id %>?_method=DELETE" method="POST">
-        <button>Delete Pub</button>
-        </form>
-    </p>
-    <footer>
-        <a href="/pubs">All Pubs</a>
-    </footer>
+
+<div class="row">
+    <div class="col-6 offset-3">
+        <div class="card mb-5">
+            <img src="<%= pub.image %>" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title"><%= pub.title %></h5>
+              <p class="card-text"><%= pub.description %></p>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item text-muted"><%= pub.location %></li>
+              <li class="list-group-item">Average Price Per Drink: $<%= pub.price %></li>
+            </ul>
+            <div class="card-body">
+                <a href="/pubs/<%= pub._id %>/edit" class="card-link btn btn-info">Edit Pub</a>
+                <form class="d-inline" action="/pubs/<%= pub._id %>?_method=DELETE" method="POST">
+                    <button class="btn btn-danger">Delete Pub</button>
+                    </form>
+            </div>
+            <div class="card-footer">
+                <a class="text-muted" href="/pubs">View All Pubs</a>
+            </div>
+          </div>
+    </div>
+</div>

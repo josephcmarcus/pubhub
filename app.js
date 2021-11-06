@@ -40,6 +40,10 @@ app.get('/pubs/new', (req, res) => {
     res.render('pubs/new')
 })
 
+app.get('/error', (req, res) => {
+    wazow()
+})
+
 app.post('/pubs', async (req, res) => {
     const pub = new Pub(req.body.pub);
     await pub.save();
@@ -66,12 +70,19 @@ app.put('/pubs/:id', async (req, res) => {
 
 app.delete('/pubs/:id', async (req, res) => {
     const { id } = req.params;
-    await Pubs.findByIdAndDelete(id);
+    await Pub.findByIdAndDelete(id);
     res.redirect('/pubs')
 })
 
-app.use((req, res) => {
-    res.status(404).send('Not Found');
+// app.use((req, res) => {
+//     res.status(404).send('Not Found');
+// })
+
+app.use((err, req, res, next) => {
+    console.log('*********')
+    console.log('**ERROR**')
+    console.log('*********')
+    next(err)
 })
 
 app.listen(3000, () => {
