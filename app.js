@@ -5,8 +5,16 @@ const Pub = require('./models/pub');
 const methodOverride = require('method-override');
 const morgan = require('morgan');
 const ejsMate = require('ejs-mate');
+const catchAsync = require('./utils/catchAsync');
+const ExpressError = require('./utils/ExpressError');
+const {pubSchema} = require('./schemas');
 
-mongoose.connect('mongodb://localhost:27017/yelp-camp', {
+// mongoose.connect('mongodb://localhost:27017/yelp-camp', {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true
+// });
+
+mongoose.connect('mongodb://localhost:27017/pubhub', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
@@ -27,14 +35,33 @@ app.use(methodOverride('_method'));
 app.use(morgan('dev'));
 app.engine('ejs', ejsMate);
 
+const validatePub = (req, res, next) => {
+    const pubSchema = Joi.object({
+        pub: Joi.object({
+            title: Joi.string().required(),
+            price: Joi.number().required().min(0),
+            location: Joi.string().required(),
+            image: Joi.string().required(),
+            description: Joi.string().required()
+        }).required()
+    })
+    const {error} = pubSchema.validate(req.body);
+    if (error) {
+        const msg = error.details.map(el => el.message).join(',')
+        throw new ExpressError(msg, 400)
+    } else {
+        next();
+    }
+}
+
 app.get('/', (req, res) => {
     res.render('home')
 })
 
-app.get('/pubs', async (req, res) => {
+app.get('/pubs', catchAsync(async (req, res) => {
     const pubs = await Pub.find({})
     res.render('pubs/index', { pubs })
-})
+}))
 
 app.get('/pubs/new', (req, res) => {
     res.render('pubs/new')
@@ -44,45 +71,44 @@ app.get('/error', (req, res) => {
     wazow()
 })
 
-app.post('/pubs', async (req, res) => {
+app.post('/pubs', validatePub, catchAsync(async (req, res) => {
     const pub = new Pub(req.body.pub);
     await pub.save();
     res.redirect(`/pubs/${pub._id}`)
-})
+}))
 
-app.get('/pubs/:id', async (req, res) => {
+app.get('/pubs/:id', catchAsync(async (req, res) => {
     const { id } = req.params;
     const pub = await Pub.findById(id);
     res.render('pubs/show', { pub });
-})
+}))
 
-app.get('/pubs/:id/edit', async (req, res) => {
+app.get('/pubs/:id/edit', catchAsync(async (req, res) => {
     const { id } = req.params;
     const pub = await Pub.findById(id);
     res.render('pubs/edit', { pub });
-})
+}))
 
-app.put('/pubs/:id', async (req, res) => {
+app.put('/pubs/:id', validatePub, catchAsync(async (req, res) => {
     const { id } = req.params;
     const pub = await Pub.findByIdAndUpdate(id, {...req.body.pub});
     res.redirect(`/pubs/${pub._id}`)
-})
+}))
 
-app.delete('/pubs/:id', async (req, res) => {
+app.delete('/pubs/:id', catchAsync(async (req, res) => {
     const { id } = req.params;
     await Pub.findByIdAndDelete(id);
     res.redirect('/pubs')
+}))
+
+app.all('*', (req, res, next) => {
+    next(new ExpressError('Page Not Found', 404))
 })
 
-// app.use((req, res) => {
-//     res.status(404).send('Not Found');
-// })
-
 app.use((err, req, res, next) => {
-    console.log('*********')
-    console.log('**ERROR**')
-    console.log('*********')
-    next(err)
+    const { statusCode = 500 } = err;
+    if(!err.message) err.message = 'Oh no! Something went wrong.';
+    res.status(statusCode).render('error', { err });
 })
 
 app.listen(3000, () => {

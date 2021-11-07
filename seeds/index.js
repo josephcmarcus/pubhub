@@ -4,7 +4,7 @@ const cities = require('./cities');
 const {places, descriptors} = require('./seedHelpers');
 const Pub = require('../models/pub');
 
-mongoose.connect('mongodb://localhost:27017/yelp-camp', {
+mongoose.connect('mongodb://localhost:27017/pubhub', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });

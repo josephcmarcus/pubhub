@@ -52,4 +52,5 @@ module.exports.places = [
     'Taproom',
     'Brewery',
     'Speakeasy',
+    'Saloon'
 ];
