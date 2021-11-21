@@ -2,12 +2,13 @@ const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
 const Pub = require('./models/pub');
+const Review = require('./models/review');
 const methodOverride = require('method-override');
 const morgan = require('morgan');
 const ejsMate = require('ejs-mate');
 const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError');
-const {pubSchema} = require('./schemas');
+const {pubSchema, reviewSchema} = require('./schemas');
 
 // mongoose.connect('mongodb://localhost:27017/yelp-camp', {
 //     useNewUrlParser: true,
@@ -46,6 +47,16 @@ const validatePub = (req, res, next) => {
         }).required()
     })
     const {error} = pubSchema.validate(req.body);
+    if (error) {
+        const msg = error.details.map(el => el.message).join(',')
+        throw new ExpressError(msg, 400)
+    } else {
+        next();
+    }
+}
+
+const validateReview = (req, res, next) => {
+    const {error} = reviewSchema.validate(req.body);
     if (error) {
         const msg = error.details.map(el => el.message).join(',')
         throw new ExpressError(msg, 400)
@@ -99,6 +110,17 @@ app.delete('/pubs/:id', catchAsync(async (req, res) => {
     const { id } = req.params;
     await Pub.findByIdAndDelete(id);
     res.redirect('/pubs')
+}))
+
+app.post('/pubs/:id/reviews', validateReview, catchAsync(async(req, res) => {
+    const { id } = req.params;
+    const pub = await Pub.findById(id);
+    const review = new Review(req.body.review);
+    pub.reviews.push(review);
+    await review.save();
+    await pub.save();
+    console.log(review);
+    res.redirect(`/pubs/${pub._id}`);
 }))
 
 app.all('*', (req, res, next) => {

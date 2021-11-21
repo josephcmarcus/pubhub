@@ -2,7 +2,7 @@
 
 <div class="row">
     <div class="col-6 offset-3">
-        <div class="card mb-5">
+        <div class="card mb-4">
             <img src="<%= pub.image %>" class="card-img-top" alt="...">
             <div class="card-body">
               <h5 class="card-title"><%= pub.title %></h5>
@@ -22,5 +22,18 @@
                 <a class="text-muted" href="/pubs">View All Pubs</a>
             </div>
           </div>
+          <h2>Leave a Review</h2>
+          <form class="mb-3 validated-form" action="/pubs/<%=pub._id%>/reviews" method="POST" novalidate>
+            <div class="mb-3">
+              <label class="form-label" for="rating">Rating</label>
+              <input class="form-range" type="range" min="1" max="5" name="review[rating]" id="rating">
+            </div>
+            <div class="mb-3">
+              <label for="body">Review</label>
+                <textarea class="form-control" name="review[body]" id="body" cols="30" rows="3" required></textarea>
+                <div class="valid-feedback">Looks good!</div>
+            </div>
+            <button class="btn btn-success">Submit</button>
+          </form>
     </div>
 </div>
