@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const path = require('path');
 const Pub = require('./models/pub');
 const Review = require('./models/review');
+const pubRoutes = require('./routes/pubs')
 const methodOverride = require('method-override');
 const morgan = require('morgan');
 const ejsMate = require('ejs-mate');
@@ -65,6 +66,8 @@ const validateReview = (req, res, next) => {
     }
 }
 
+app.use('/routertest', pubRoutes);
+
 app.get('/', (req, res) => {
     res.render('home')
 })
@@ -78,10 +81,6 @@ app.get('/pubs/new', (req, res) => {
     res.render('pubs/new')
 })
 
-app.get('/error', (req, res) => {
-    wazow()
-})
-
 app.post('/pubs', validatePub, catchAsync(async (req, res) => {
     const pub = new Pub(req.body.pub);
     await pub.save();
@@ -90,7 +89,7 @@ app.post('/pubs', validatePub, catchAsync(async (req, res) => {
 
 app.get('/pubs/:id', catchAsync(async (req, res) => {
     const { id } = req.params;
-    const pub = await Pub.findById(id);
+    const pub = await Pub.findById(id).populate('reviews');
     res.render('pubs/show', { pub });
 }))
 
@@ -108,8 +107,8 @@ app.put('/pubs/:id', validatePub, catchAsync(async (req, res) => {
 
 app.delete('/pubs/:id', catchAsync(async (req, res) => {
     const { id } = req.params;
-    await Pub.findByIdAndDelete(id);
-    res.redirect('/pubs')
+    const pub = await Pub.findByIdAndDelete(id);
+    res.redirect('/pubs');
 }))
 
 app.post('/pubs/:id/reviews', validateReview, catchAsync(async(req, res) => {
@@ -121,6 +120,13 @@ app.post('/pubs/:id/reviews', validateReview, catchAsync(async(req, res) => {
     await pub.save();
     console.log(review);
     res.redirect(`/pubs/${pub._id}`);
+}))
+
+app.delete('/pubs/:id/reviews/:reviewId', catchAsync(async(req, res) => {
+    const { id, reviewId } = req.params;
+    const pub = await Pub.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
+    await Review.findByIdAndDelete(reviewId);
+    res.redirect(`/pubs/${id}`);
 }))
 
 app.all('*', (req, res, next) => {
