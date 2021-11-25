@@ -1,13 +1,19 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const path = require('path');
-const pubRoutes = require('./routes/pubs')
-const reviewRoutes = require('./routes/reviews');
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
 const session = require('express-session')
 const flash = require('connect-flash')
 const ExpressError = require('./utils/ExpressError');
+const passport = require('passport');
+const passportLocalStrategy = require('passport-local');
+const User = require('./models/user');
+
+const pubRoutes = require('./routes/pubs')
+const reviewRoutes = require('./routes/reviews');
+const userRoutes = require('./routes/users');
+
 
 mongoose.connect('mongodb://localhost:27017/pubhub', {
     useNewUrlParser: true,
@@ -45,14 +51,28 @@ const sessionConfig = {
 app.use(session(sessionConfig));
 app.use(flash());
 
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(new passportLocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser())
+passport.deserializeUser(User.deserializeUser());
+
 app.use((req, res, next ) => {
     res.locals.success = req.flash('success');
     res.locals.error = req.flash('error');
     next();
 })
 
+// app.get('/fakeUser', async (req, res) => {
+//     const user = new User({email: 'colt@gmail.com', username: 'colt'});
+//     const newUser = await User.register(user, 'monkey');
+//     res.send(newUser);
+// })
+
 app.use('/pubs', pubRoutes);
 app.use('/pubs/:id/reviews', reviewRoutes)
+app.use('/', userRoutes);
 
 app.get('/', (req, res) => {
     res.render('home')
