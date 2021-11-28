@@ -23,6 +23,7 @@ const seedDB = async() => {
         const random1000 = Math.floor(Math.random() * 1000);
         const price = Math.floor(Math.random() * 5) + 10;
         const pub = new Pub({
+            author: '61a2a0125c37ebe66adbcbae',
             location: `${cities[random1000].city}, ${cities[random1000].state}`,
             title: `${sample(descriptors)} ${sample(places)}`,
             image: 'https://source.unsplash.com/collection/1021588',
