@@ -10,9 +10,11 @@ module.exports.renderNewForm = (req, res) => {
 };
 
 module.exports.createPub = async (req, res) => {
-    const pub = new Pub(req.body.pub);
+  const pub = new Pub(req.body.pub);
+    pub.images = req.files.map(f => ({ url: f.path, filename: f.filename }));
     pub.author = req.user._id;
     await pub.save();
+    console.log(pub);
     req.flash('success', 'Successfully created a new pub.');
     res.redirect(`/pubs/${pub._id}`);
 };
@@ -44,6 +46,9 @@ module.exports.renderEditForm = async (req, res) => {
 module.exports.editPub = async (req, res) => {
     const { id } = req.params;
     const pub = await Pub.findByIdAndUpdate(id, {...req.body.pub});
+    const imgs = req.files.map(f => ({ url: f.path, filename: f.filename }));
+    pub.images.push(...imgs);
+    await pub.save();
     req.flash('success', 'Successfully updated pub.');
     res.redirect(`/pubs/${pub._id}`)
 };

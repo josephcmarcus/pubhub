@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const path = require('path');
 const cities = require('./cities');
+const imagesPool = require('./imagesPool')
 const {places, descriptors} = require('./seedHelpers');
 const Pub = require('../models/pub');
 
@@ -21,14 +22,15 @@ const seedDB = async() => {
     await Pub.deleteMany({});
     for(let i = 0; i < 50; i++) {
         const random1000 = Math.floor(Math.random() * 1000);
+        const random15 = Math.floor(Math.random() * 15);
         const price = Math.floor(Math.random() * 5) + 10;
         const pub = new Pub({
             author: '61a2a0125c37ebe66adbcbae',
             location: `${cities[random1000].city}, ${cities[random1000].state}`,
             title: `${sample(descriptors)} ${sample(places)}`,
-            image: 'https://source.unsplash.com/collection/1021588',
-            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-            price: `${price}`
+            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+            price: `${price}`,
+            images: [{url: `${imagesPool[random15].url}`, filename: `${imagesPool[random15].filename}`}]
         })
         await pub.save();
     }
