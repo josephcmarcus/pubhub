@@ -7,5 +7,5 @@ zoom: 9 // starting zoom
 });
 
 new mapboxgl.Marker()
-.setLngLat([-74.5, 40])
+.setLngLat(pub.geometry.coordinates)
 .addTo(map);
