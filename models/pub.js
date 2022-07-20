@@ -11,6 +11,8 @@ ImageSchema.virtual('thumbnail').get(function() {
     return this.url.replace('/upload', '/upload/w_200');
 })
 
+const opts = { toJSON: { virtuals: true } };
+
 const PubSchema = new Schema({ 
     title: String,
     images: [ImageSchema],
@@ -38,6 +40,10 @@ const PubSchema = new Schema({
             ref: 'Review'
         }
     ]
+}, opts);
+
+PubSchema.virtual('properties.popUpMarkup').get(function() {
+    return 'I am popup text!';
 });
 
 PubSchema.post('findOneAndDelete', async function (doc) {
