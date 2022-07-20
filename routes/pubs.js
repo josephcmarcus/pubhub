@@ -13,7 +13,7 @@ router.route('/')
   .get(catchAsync(pubs.index))
   .post(isLoggedIn, upload.array('images'), validatePub, catchAsync(pubs.createPub));
 
-  router.get('/new', isLoggedIn, pubs.renderNewForm);
+router.get('/new', isLoggedIn, pubs.renderNewForm);
 
 router.route('/:id')
   .get(catchAsync(pubs.showPub))

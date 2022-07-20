@@ -25,12 +25,19 @@ const seedDB = async() => {
         const random15 = Math.floor(Math.random() * 15);
         const price = Math.floor(Math.random() * 5) + 10;
         const pub = new Pub({
-            author: '61a2a0125c37ebe66adbcbae',
+            author: '628e921004fa3c453286001e',
             location: `${cities[random1000].city}, ${cities[random1000].state}`,
             title: `${sample(descriptors)} ${sample(places)}`,
             description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
             price: `${price}`,
-            images: [{url: `${imagesPool[random15].url}`, filename: `${imagesPool[random15].filename}`}]
+            geometry: {
+                type: "Point",
+                coordinates: [
+                    cities[random1000].longitude,
+                    cities[random1000].latitude,
+                ]
+            },
+            images: [{url: `${imagesPool[random15].url}`, filename: `${imagesPool[random15].filename}`}],
         })
         await pub.save();
     }
