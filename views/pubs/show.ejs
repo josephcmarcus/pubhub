@@ -2,7 +2,7 @@
 
 <div class="row">
     <div class="col-6">
-      <div id='map' style='width: 400px; height: 300px;'></div>
+      <!-- <div id='map' style='width: 400px; height: 300px;'></div> -->
       <div id="pubCarousel" class="carousel slide" data-ride="carousel">
         <div class="carousel-inner">
           <% pub.images.forEach((img, i) => { %>
@@ -50,6 +50,7 @@
           </div>
     </div>
     <div class="col-6">
+      <div id='map'></div>
       <% if(currentUser) {%>
       <h2>Leave a Review</h2>
       <form class="mb-3 validated-form" action="/pubs/<%=pub._id%>/reviews" method="POST" novalidate>

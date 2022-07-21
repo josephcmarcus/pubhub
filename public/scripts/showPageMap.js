@@ -6,6 +6,9 @@ center: pub.geometry.coordinates, // starting position [lng, lat]
 zoom: 10 // starting zoom
 });
 
+// Add zoom and rotation controls to the map.
+map.addControl(new mapboxgl.NavigationControl());
+
 new mapboxgl.Marker()
 .setLngLat(pub.geometry.coordinates)
 .setPopup(

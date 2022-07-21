@@ -1,21 +1,32 @@
 <% layout('layouts/boilerplate') %>
-<h1>Register</h1>
-<form action="/register" class="validated-form" method="POST" novalidate>
-  <div class="mb-3">
-    <label class="form-label" for="username">Username</label>
-    <input class="form-control" type="text" id="username" name="username" required>
-    <div class="valid-feedback">Looks good!</div>
+
+<div class="container d-flex justify-content-center align-items-center mt-5 mb-5">
+  <div class="row">
+    <div class="col-lg-6 offset-lg-3">
+      <div class="card shadow">
+        <img style="width: 100%; height: auto;" src="https://www.fodors.com/wp-content/uploads/2019/04/1_LondonPubs_CrossKeys_shutterstock_1236706867.jpg" alt="">
+        <div class="card-body">
+          <div class="card-title"><strong>Register</strong></div>
+          <form action="/register" class="validated-form" method="POST" novalidate>
+            <div class="mb-3">
+              <label class="form-label" for="username">Username</label>
+              <input class="form-control" type="text" id="username" name="username" required autofocus>
+              <div class="valid-feedback">Looks good!</div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="email">Email</label>
+            <input class="form-control" type="email" id="email" name="email" required>
+            <div class="valid-feedback">Looks good!</div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="password">Password</label>
+            <input class="form-control" type="password" id="password" name="password" required>
+            <div class="valid-feedback">Looks good!</div>
+          </div>
+          </div>
+          <button class="btn btn-success btn-block">Submit</button>
+          </form>
+        </div>
+    </div>
+  </div>
 </div>
-<div class="mb-3">
-  <label class="form-label" for="email">Email</label>
-  <input class="form-control" type="email" id="email" name="email" required>
-  <div class="valid-feedback">Looks good!</div>
-</div>
-<div class="mb-3">
-  <label class="form-label" for="password">Password</label>
-  <input class="form-control" type="password" id="password" name="password" required>
-  <div class="valid-feedback">Looks good!</div>
-</div>
-</div>
-<button class="btn btn-success">Submit</button>
-</form>

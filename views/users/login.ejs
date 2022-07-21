@@ -1,16 +1,27 @@
 <% layout('layouts/boilerplate') %>
-<h1>Login</h1>
-<form action="/login" class="validated-form" method="POST" novalidate>
-  <div class="mb-3">
-    <label class="form-label" for="username">Username</label>
-    <input class="form-control" type="text" id="username" name="username" required>
-    <div class="valid-feedback">Looks good!</div>
-</div>
-<div class="mb-3">
-  <label class="form-label" for="password">Password</label>
-  <input class="form-control" type="password" id="password" name="password" required>
-  <div class="valid-feedback">Looks good!</div>
-</div>
-</div>
-<button class="btn btn-success">Login</button>
-</form>
+
+  <div class="container d-flex justify-content-center align-items-center mt-5 mb-5">
+    <div class="row">
+      <div class="col-lg-6 offset-lg-3">
+        <div class="card shadow">
+          <img style="width: 100%; height: auto;" src="https://www.fodors.com/wp-content/uploads/2019/04/2_LondonPubs_JerusalemTavern_jt01.jpg" alt="">
+          <div class="card-body">
+            <div class="card-title"><strong>Login</strong></div>
+            <form action="/login" class="validated-form" method="POST" novalidate>
+              <div class="mb-3">
+                <label class="form-label" for="username">Username</label>
+                <input class="form-control" type="text" id="username" name="username" required autofocus>
+                <div class="valid-feedback">Looks good!</div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="password">Password</label>
+                <input class="form-control" type="password" id="password" name="password" required>
+                <div class="valid-feedback">Looks good!</div>
+              </div>
+          </div>
+          <button class="btn btn-success btn-block">Login</button>
+          </form>
+          </div>
+      </div>
+    </div>
+  </div>
