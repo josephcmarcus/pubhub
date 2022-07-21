@@ -61,10 +61,10 @@ module.exports.editPub = async (req, res) => {
     if(req.body.deleteImages) {
       for(let filename of req.body.deleteImages) {
         await cloudinary.uploader.destroy(filename);
-      }
+      };
       await pub.updateOne({$pull: {images: {filename: {$in: req.body.deleteImages}}}})
       console.log(pub)
-    }
+    };
     req.flash('success', 'Successfully updated pub.');
     res.redirect(`/pubs/${pub._id}`)
 };
