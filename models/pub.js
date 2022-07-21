@@ -43,7 +43,9 @@ const PubSchema = new Schema({
 }, opts);
 
 PubSchema.virtual('properties.popUpMarkup').get(function() {
-    return 'I am popup text!';
+    return `
+    <strong><a href="/pubs/${this._id}">${this.title}</a></strong>
+    <p>${this.location}</p>`
 });
 
 PubSchema.post('findOneAndDelete', async function (doc) {

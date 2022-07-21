@@ -12,6 +12,7 @@ const flash = require('connect-flash')
 const ExpressError = require('./utils/ExpressError');
 const passport = require('passport');
 const passportLocalStrategy = require('passport-local');
+const mongoSanitize = require('express-mongo-sanitize')
 const User = require('./models/user');
 
 const pubRoutes = require('./routes/pubs')
@@ -38,10 +39,12 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.urlencoded({extended: true}));
 app.use(methodOverride('_method'));
 app.engine('ejs', ejsMate);
+app.use(mongoSanitize());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
 const sessionConfig = {
+    name: 'p-session',
     secret: 'thisshouldbeabettersecret',
     resave: false,
     saveUninitialized: true,
@@ -68,12 +71,6 @@ app.use((req, res, next ) => {
     res.locals.error = req.flash('error');
     next();
 })
-
-// app.get('/fakeUser', async (req, res) => {
-//     const user = new User({email: 'colt@gmail.com', username: 'colt'});
-//     const newUser = await User.register(user, 'monkey');
-//     res.send(newUser);
-// })
 
 app.use('/pubs', pubRoutes);
 app.use('/pubs/:id/reviews', reviewRoutes)
