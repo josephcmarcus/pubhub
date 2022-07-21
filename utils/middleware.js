@@ -9,7 +9,7 @@ module.exports.isLoggedIn = (req, res, next) => {
     req.session.returnTo = req.originalUrl
     req.flash('error', 'You must be signed in.');
     return res.redirect('/login');
-  }
+  };
   next();
 }
 
@@ -20,7 +20,7 @@ module.exports.validatePub = (req, res, next) => {
         throw new ExpressError(msg, 400)
     } else {
         next();
-    }
+    };
   }
 
 module.exports.validateReview = (req, res, next) => {
@@ -30,8 +30,8 @@ module.exports.validateReview = (req, res, next) => {
         throw new ExpressError(msg, 400)
     } else {
         next();
-    }
-  }
+    };
+  };
 
 module.exports.isAuthor = async(req, res, next) => {
     const { id } = req.params;
@@ -39,9 +39,9 @@ module.exports.isAuthor = async(req, res, next) => {
     if (!pub.author.equals(req.user._id)) {
     req.flash('error', 'You do not have permission to do that.');
     return res.redirect(`/pubs/${id}`);
-  }
+  };
   next();
-  }  
+  };
 
   module.exports.isReviewAuthor = async(req, res, next) => {
     const { id, reviewId } = req.params;
@@ -49,6 +49,6 @@ module.exports.isAuthor = async(req, res, next) => {
     if (!review.author.equals(req.user._id)) {
     req.flash('error', 'You do not have permission to do that.');
     return res.redirect(`/pubs/${id}`);
-  }
+  };
   next();
-  }  
+  };
