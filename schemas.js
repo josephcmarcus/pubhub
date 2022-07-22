@@ -32,11 +32,11 @@ module.exports.pubSchema = Joi.object({
         description: Joi.string().required().escapeHTML()
     }).required(),
     deleteImages: Joi.array()
-})
+});
 
 module.exports.reviewSchema = Joi.object({
     review: Joi.object({
         rating: Joi.number().required(),
         body: Joi.string().required().escapeHTML()
     }).required()
-})
+});

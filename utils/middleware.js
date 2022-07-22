@@ -11,7 +11,7 @@ module.exports.isLoggedIn = (req, res, next) => {
     return res.redirect('/login');
   };
   next();
-}
+};
 
 module.exports.validatePub = (req, res, next) => {
     const {error} = pubSchema.validate(req.body);
@@ -21,7 +21,7 @@ module.exports.validatePub = (req, res, next) => {
     } else {
         next();
     };
-  }
+  };
 
 module.exports.validateReview = (req, res, next) => {
     const {error} = reviewSchema.validate(req.body);
