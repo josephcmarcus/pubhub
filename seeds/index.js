@@ -5,7 +5,7 @@ const imagesPool = require('./imagesPool')
 const {places, descriptors} = require('./seedHelpers');
 const Pub = require('../models/pub');
 
-mongoose.connect('mongodb://localhost:27017/pubhub', {
+mongoose.connect('mongodb+srv://admin:EGVOik2J62VFffT9@cluster0.wipqlgn.mongodb.net/?retryWrites=true&w=majority', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
@@ -25,7 +25,7 @@ const seedDB = async() => {
         const random15 = Math.floor(Math.random() * 15);
         const price = Math.floor(Math.random() * 5) + 10;
         const pub = new Pub({
-            author: '628e921004fa3c453286001e',
+            author: '62d8c4e9aa43850adda145d7',
             location: `${cities[random1000].city}, ${cities[random1000].state}`,
             title: `${sample(descriptors)} ${sample(places)}`,
             description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
