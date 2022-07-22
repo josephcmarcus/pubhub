@@ -7,21 +7,20 @@ const mongoose = require('mongoose');
 const path = require('path');
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
-const session = require('express-session')
-const flash = require('connect-flash')
+const session = require('express-session');
+const flash = require('connect-flash');
 const ExpressError = require('./utils/ExpressError');
 const passport = require('passport');
 const passportLocalStrategy = require('passport-local');
-const mongoSanitize = require('express-mongo-sanitize')
+const mongoSanitize = require('express-mongo-sanitize');
 const User = require('./models/user');
 const MongoDBStore = require('connect-mongo')(session);
 
-const pubRoutes = require('./routes/pubs')
+const pubRoutes = require('./routes/pubs');
 const reviewRoutes = require('./routes/reviews');
 const userRoutes = require('./routes/users');
 
-const dbUrl = 'mongodb://localhost:27017/pubhub';
-
+const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/pubhub';
 mongoose.connect(dbUrl, {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -45,9 +44,11 @@ app.use(mongoSanitize());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+const secret = process.env.SECRET || 'thisshouldbeabettersecret';
+
 const store = new MongoDBStore({
     url: dbUrl,
-    secret: 'thisshouldbeabettersecret',
+    secret,
     touchAfter: 24 * 60 * 60
 });
 
@@ -58,7 +59,7 @@ store.on('error', function(e) {
 const sessionConfig = {
     store,
     name: 'p-session',
-    secret: 'thisshouldbeabettersecret',
+    secret,
     resave: false,
     saveUninitialized: true,
     cookie: {
